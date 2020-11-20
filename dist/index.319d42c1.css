@@ -37,6 +37,9 @@ body {
   background-color: gray;
   padding: 3rem;
   justify-self: end;
+  align-self: start;
+
+  min-height: 22rem;
 }
 
 .Search__Message-box--invisible {
