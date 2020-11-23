@@ -515,6 +515,7 @@ const init = () => {
   _helper.elements.addNewForm.addEventListener('submit', event => {
     event.preventDefault();
     addNewControl();
+    console.log('Form submitted');
   });
 };
 
@@ -5073,11 +5074,8 @@ const state = {
   searchInputTouced: false,
   people: null,
   newPerson: null,
-  personCreated: false // serverError: null,
-
-}; //TODO
-// pass proper error from the server
-
+  personCreated: false
+};
 exports.state = state;
 
 const getAllUsers = async url => {
@@ -5085,12 +5083,11 @@ const getAllUsers = async url => {
     const result = await fetch(url);
     const data = await result.json();
     state.people = data;
-    console.log(state.people);
+    console.log(`People fetched from server  ${JSON.stringify(state.people)}`);
   } catch (error) {
     throw new error();
   }
-}; //TODO
-//get new person  from input
+}; //get new person  from input
 
 
 exports.getAllUsers = getAllUsers;
@@ -5104,6 +5101,7 @@ const createNewPerson = newPerson => {
     name,
     age
   };
+  console.log(`New person name:'${name}'  age:${age} created`);
 }; // send a new person
 
 
@@ -5121,9 +5119,9 @@ const sendNewPerson = async url => {
       body: JSON.stringify(state.newPerson)
     });
     state.personCreated = result.ok;
+    console.log(`The person name: '${state.newPerson.name}' age:${state.newPerson.age} was successfully sent`);
   } catch (error) {
-    throw new error(); // state.serverError = error.response.data.error;
-    // console.log(error.response.data.error);
+    throw new error();
   }
 }; //reset state to prevent unneeded getAllUsers calls
 
