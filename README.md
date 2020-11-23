@@ -9,4 +9,4 @@ The whole application (BE + FE) has also been deployed into the web using Heroku
 https://enigmatic-lake-81712.herokuapp.com/ ;
 
 The FE part for this assignment can be found here:
-https://github.com/XeniaChe/FE-for-Simple-FullStack/tree/master ;
+https://github.com/XeniaChe/FE-for-Simple-FullStack;
