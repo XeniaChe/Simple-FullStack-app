@@ -6,7 +6,7 @@ const middleware = require('./utils/middelware');
 const usersRouts = require('./controllers/users');
 
 app.use(cors());
-app.use(express.static('dist'));
+app.use(express.static('build'));
 app.use(express.json());
 app.use('/api/users', usersRouts);
 
