@@ -1,16 +1,18 @@
 const usersRouts = require('express').Router();
 
-let users = [
-  { name: 'John', age: 27 },
-  { name: 'Jack', age: 19 },
-  { name: 'Mack', age: 51 },
-  { name: 'Sasin', age: 70 },
-  { name: 'Richard', age: 34 },
-  { name: 'Andrew', age: 42 },
-];
+const db = {
+  people: [
+    { name: 'John', age: 27 },
+    { name: 'Jack', age: 19 },
+    { name: 'Mack', age: 51 },
+    { name: 'Sasin', age: 70 },
+    { name: 'Richard', age: 34 },
+    { name: 'Andrew', age: 42 },
+  ],
+};
 
 usersRouts.get('/', (request, response) => {
-  response.status(200).json(users);
+  response.status(200).json(db.people);
 });
 
 usersRouts.post('/', (request, response) => {
@@ -21,7 +23,10 @@ usersRouts.post('/', (request, response) => {
   }
 
   //newName repeating check
-  let nameRepeatCheck = users.map((el) => el.name).includes(name);
+  const nameRepeatCheck = db.people
+    .map((el) => el.name.toLowerCase())
+    .includes(name);
+
   if (nameRepeatCheck) {
     return response
       .status(409)
@@ -33,7 +38,7 @@ usersRouts.post('/', (request, response) => {
     age: +age,
   };
 
-  users = users.concat(newPerson);
+  db.people = db.people.concat(newPerson);
 
   response.status(201).json(newPerson);
 });
