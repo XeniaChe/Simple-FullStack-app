@@ -520,9 +520,22 @@ const searchControl = () => {
 
 const addNewControl = async () => {
   try {
-    let newPerson = addNewView.getInput();
-    model.createNewPerson(newPerson);
-    await model.sendNewPerson(_config.API_URL);
+    let name = _helper.elements.nameInput.value;
+    let age = _helper.elements.ageInput.value;
+    let newPerson = {
+      name,
+      age
+    };
+
+    if (name !== '' && age !== '') {
+      console.log(`New person name:'${name}'  age:${age} created`);
+    }
+
+    if (name === '' || age === '') {
+      console.log(`Person's name or age is missing`);
+    }
+
+    await model.sendNewPerson(_config.API_URL, newPerson);
     addNewView.clearInput();
     addNewView.showNotification(model.state.personCreated, newPerson);
 
@@ -5064,7 +5077,7 @@ $({ target: 'URL', proto: true, enumerable: true }, {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.resetPersonCreatedState = exports.sendNewPerson = exports.createNewPerson = exports.getAllUsers = exports.state = void 0;
+exports.resetPersonCreatedState = exports.sendNewPerson = exports.getAllUsers = exports.state = void 0;
 
 require("core-js/modules/es.typed-array.float32-array");
 
@@ -5113,35 +5126,13 @@ const getAllUsers = async url => {
   } catch (error) {
     throw new error();
   }
-}; //get new person  from input
+}; // send the new person
 
 
 exports.getAllUsers = getAllUsers;
 
-const createNewPerson = newPerson => {
-  const {
-    name,
-    age
-  } = newPerson;
-
-  if (name !== '' && age !== '') {
-    state.newPerson = {
-      name,
-      age
-    };
-    console.log(`New person name:'${name}'  age:${age} created`);
-  }
-
-  if (name === '' || age === '') {
-    console.log(`Person's name or age is missing`);
-  }
-}; // send a new person
-
-
-exports.createNewPerson = createNewPerson;
-
-const sendNewPerson = async url => {
-  if (!state.newPerson || state.newPerson.name === '' || state.newPerson.age === '') {
+const sendNewPerson = async (url, newPerson) => {
+  if (!newPerson || newPerson.name === '' || newPerson.age === '') {
     console.log(`Person wasn't sent`);
     return;
   }
@@ -5152,10 +5143,10 @@ const sendNewPerson = async url => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(state.newPerson)
+      body: JSON.stringify(newPerson)
     });
     state.personCreated = result.ok;
-    console.log(`The person name: '${state.newPerson.name}' age:${state.newPerson.age} was successfully sent`);
+    console.log(`The person name: '${newPerson.name}' age:${newPerson.age} was successfully sent`);
   } catch (error) {
     throw new error();
   }
