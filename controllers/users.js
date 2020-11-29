@@ -11,8 +11,23 @@ const db = {
   ],
 };
 
+/*
 usersRouts.get('/', (request, response) => {
   response.status(200).json(db.people);
+});
+*/
+
+usersRouts.get('/', (request, response) => {
+  let query = request.query.searcQuery;
+
+  console.log(` query from FE ${query}`);
+  let filteredPeople = [];
+  if (query) {
+    filteredPeople = db.people.filter((el) =>
+      el.name.toLowerCase().includes(query)
+    );
+  }
+  response.status(200).json(filteredPeople);
 });
 
 usersRouts.post('/', (request, response) => {
